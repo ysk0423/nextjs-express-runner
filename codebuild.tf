@@ -1,7 +1,7 @@
 resource "aws_codebuild_project" "nextjs-express-build" {
   name          = "${local.project_name}-build"
   build_timeout = "15"
-  service_role  = aws_iam_role.codebuild_role.arn
+  service_role  = aws_iam_role.codebuild.arn
 
   artifacts {
     type = "NO_ARTIFACTS"
@@ -28,7 +28,7 @@ resource "aws_codebuild_project" "nextjs-express-build" {
 
     environment_variable {
       name  = "ECR_REPO_URI"
-      value = aws_ecr_repository.nextjs_express.repository_url.value
+      value = aws_ecr_repository.nextjs_express.repository_url
     }
   }
 }

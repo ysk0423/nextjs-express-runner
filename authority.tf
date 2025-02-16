@@ -1,10 +1,10 @@
 ##### CodeBuild #####
 resource "aws_iam_role" "codebuild" {
   name               = "${local.project_name}-codebuild"
-  assume_role_policy = data.aws_iam_policy_document.codebuild.json
+  assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
 }
 
-data "aws_iam_policy_document" "codebuild" {
+data "aws_iam_policy_document" "codebuild_assume_role" {
   statement {
     effect = "Allow"
 
@@ -34,16 +34,6 @@ data "aws_iam_policy_document" "codebuild" {
     resources = ["*"]
   }
 
-  // アーティファクト用S3バケットへの権限
-  statement {
-    effect  = "Allow"
-    actions = ["s3:*"]
-    resources = [
-      aws_s3_bucket.codepipeline_bucket.arn,
-      "${aws_s3_bucket.codepipeline_bucket.arn}/*",
-    ]
-  }
-
   // ECRプッシュ権限
   statement {
     effect = "Allow"
@@ -64,5 +54,3 @@ data "aws_iam_policy_document" "codebuild" {
     resources = ["*"]
   }
 }
-
-
