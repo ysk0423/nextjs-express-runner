@@ -54,3 +54,41 @@ data "aws_iam_policy_document" "codebuild" {
     resources = ["*"]
   }
 }
+
+##### AppRunner #####
+resource "aws_iam_role" "apprunner" {
+  name               = "${local.project_name}-apprunner"
+  assume_role_policy = data.aws_iam_policy_document.apprunner_assume_role.json
+}
+
+data "aws_iam_policy_document" "apprunner_assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["build.apprunner.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+resource "aws_iam_role_policy" "apprunner" {
+  role   = aws_iam_role.apprunner.name
+  policy = data.aws_iam_policy_document.apprunner.json
+}
+
+data "aws_iam_policy_document" "apprunner" {
+  // ECR関連の権限
+  statement {
+    effect = "Allow"
+    actions = [
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchGetItem",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:DescribeImages"
+    ]
+    resources = ["*"]
+  }
+}
