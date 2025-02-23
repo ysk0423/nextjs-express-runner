@@ -85,7 +85,7 @@ data "aws_iam_policy_document" "apprunner" {
     effect = "Allow"
     actions = [
       "ecr:GetAuthorizationToken",
-      "ecr:BatchGetItem",
+      "ecr:BatchGetImage",
       "ecr:GetDownloadUrlForLayer",
       "ecr:DescribeImages"
     ]
