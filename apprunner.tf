@@ -2,6 +2,9 @@
 resource "aws_apprunner_service" "nextjs-express-runner" {
   service_name = local.project_name
   source_configuration {
+    authentication_configuration {
+      access_role_arn = aws_iam_role.apprunner.arn
+    }
     image_repository {
       image_identifier = "${aws_ecr_repository.nextjs_express.repository_url}:latest"
       image_repository_type = "ECR"
