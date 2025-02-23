@@ -18,4 +18,8 @@ resource "aws_apprunner_service" "nextjs-express-runner" {
     cpu = 256
     memory = 512
   }
+
+  lifecycle {
+    ignore_changes = [source_configuration[0].image_repository[0].image_identifier]
+  }
 }
